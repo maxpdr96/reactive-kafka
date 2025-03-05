@@ -1,4 +1,4 @@
-package com.hidarisoft.reactivekafkaplayground.sec01;
+package com.hidarisoft.reactivekafkaplayground.consumers;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -11,17 +11,17 @@ import java.util.List;
 import java.util.Map;
 
     /*
-    Goal: to demo a simple kafka consumer using reactor kafka
+    Goal: Simples consumidor kafka usando reactive kafka
      */
 
 
-public class Lec01KafkaConsumer {
+public class SimpleReactiveKafkaConsumer {
 
-    private static final Logger log = LoggerFactory.getLogger(Lec01KafkaConsumer.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleReactiveKafkaConsumer.class);
 
     public static void main(String[] args) {
 
-        Map<String, Object> consumerConfig = Map.<String, Object>of(
+        Map<String, Object> consumerConfig = Map.of(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.3.25:9092,192.168.3.25:9094,192.168.3.25:9096",
                 ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
                 ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
