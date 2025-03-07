@@ -1,4 +1,4 @@
-package com.hidarisoft.reactivekafkaplayground.producers;
+package com.hidarisoft.reactivekafkaplayground.lec03onemillionrequests;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -10,8 +10,11 @@ import reactor.kafka.sender.KafkaSender;
 import reactor.kafka.sender.SenderOptions;
 import reactor.kafka.sender.SenderRecord;
 
-import java.time.Duration;
 import java.util.Map;
+
+/*
+   Goal: Producer 1000000 eventos e contando qt tempo
+    */
 
 public class KafkaProducer {
     private static final Logger log = LoggerFactory.getLogger(KafkaProducer.class);
@@ -23,16 +26,14 @@ public class KafkaProducer {
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class
         );
 
-        SenderOptions<String, String> options = SenderOptions.<String, String>create(producerConfig);
+        SenderOptions<String, String> options = SenderOptions.<String, String>create(producerConfig)
+                .maxInFlight(10_000);
 
-        Flux<SenderRecord<String, String, String>> flux = Flux.interval(Duration.ofMillis(100))
-                .take(100)
+        Flux<SenderRecord<String, String, String>> flux = Flux.range(1, 1_000_000)
                 .map(i -> new ProducerRecord<>("order-events", i.toString(), "order-" + i))
                 .map(producerRecord -> SenderRecord.create(producerRecord, producerRecord.key()));
 
-        KafkaSender.create(options)
-                .send(flux)
-                .doOnNext(stringSenderResult -> log.info("correlation id: {}", stringSenderResult.correlationMetadata()))
-                .subscribe();
+
+        com.hidarisoft.reactivekafkaplayground.lec04header.KafkaProducer.senderCreated(options, flux, log);
     }
 }

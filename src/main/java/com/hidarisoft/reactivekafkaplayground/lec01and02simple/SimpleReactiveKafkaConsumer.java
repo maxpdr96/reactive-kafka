@@ -1,4 +1,4 @@
-package com.hidarisoft.reactivekafkaplayground.consumers;
+package com.hidarisoft.reactivekafkaplayground.lec01and02simple;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
